@@ -1,0 +1,48 @@
+#include <fstream>
+
+std::ifstream fin("moscraciun_x.in");
+std::ofstream fout("moscraciun_x.out");
+
+int A[101][101], spiridusi, cnt; 
+int n, m;
+
+void fill(int x, int y){
+    if(!x || !y || x > n || y > m || !A[x][y]){
+        return;  
+    }
+    
+    if(A[x][y] == 2){
+        ++ cnt;
+    }
+    
+    A[x][y] = 0;
+
+    fill(x - 1, y);
+    fill(x, y - 1);
+    fill(x + 1, y);
+    fill(x, y + 1);
+}
+
+int main()
+{
+    fin >> n >> m;
+    
+    for(int i = 1; i <= n; ++ i){
+        for(int j = 1; j <= m; ++ j){
+            fin >> A[i][j];
+        }
+    }
+    
+    for(int i = 1; i <= n; ++ i){
+        for(int j = 1; j <= m; ++ j){
+            if(A[i][j]){
+                cnt = 0;
+                fill(i, j);
+                spiridusi = std::max(spiridusi, cnt);
+            }
+        }
+    }
+    
+    fout << spiridusi;
+    return 0;
+}
